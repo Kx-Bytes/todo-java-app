@@ -1,0 +1,16 @@
+version: "3"
+services:
+  todo-app:
+    image: kixan123/todo-java-app
+    container_name: todo-app
+    ports:
+      - "9001:9001"
+    restart: always
+
+  graphite:
+    image: graphiteapp/graphite-statsd
+    container_name: graphite
+    ports:
+      - "80:80"       # Web UI
+      - "2003:2003"   # Plaintext protocol (for metrics, required!)
+    restart: always

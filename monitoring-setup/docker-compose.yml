@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  graphite:
+    image: graphiteapp/graphite-statsd
+    container_name: graphite
+    restart: always
+    ports:
+      - "8081:80"      # Graphite Web UI (Accessible at http://localhost:8081)
+      - "2003:2003"    # Carbon TCP for receiving metrics from host (now exposed!)
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    ports:
+      - "3000:3000"    # Grafana Web UI (Accessible at http://localhost:3000)
+    depends_on:
+      - graphite
