@@ -6,10 +6,10 @@ pipeline {
         IMAGE_NAME = 'kixan123/todo-java-app'
     }
 
-    tools {
-        maven 'Maven 3'
-        jdk 'JDK 17'
-    }
+	tools {
+	    maven 'maven3'     // ✅ matches Jenkins config
+	    jdk 'jdk17'        // ✅ matches Jenkins config
+	}
 
     stages {
         stage('Clone Code') {
