@@ -1,0 +1,20 @@
+- name: Deploy Dockerized ToDo App
+  hosts: localhost
+  tasks:
+    - name: Stop existing ToDo App container (if running)
+      docker_container:
+        name: todo-java-app
+        state: absent
+
+    - name: Pull latest Docker image from Docker Hub
+      docker_image:
+        name: kixan123/todo-java-app
+        source: pull
+
+    - name: Start ToDo App container with port 9001
+      docker_container:
+        name: todo-java-app
+        image: kixan123/todo-java-app
+        state: started
+        ports:
+          - "9001:9001"
