@@ -53,5 +53,14 @@ pipeline {
                 }
             }
         }
+        stage('Notify Monitoring') {
+		    steps {
+		        script {
+		            sh '''
+		                echo "todoapp.deployments 1 $(date +%s)" | nc localhost 2003 || true
+		            '''
+		        }
+		     }
+		 }
     }
 }
