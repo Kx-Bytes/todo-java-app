@@ -48,19 +48,16 @@ pipeline {
 
         stage('Deploy with Ansible') {
             steps {
+                sh 'ansible-playbook -i ansible-deploy/inventory ansible-deploy/deploy.yml'
+            }
+        }
+
+        stage('Notify Monitoring') {
+            steps {
                 script {
-                    sh 'ansible-playbook -i ansible-deploy/inventory ansible-deploy/deploy.yml'
+                    sh 'echo "todoapp.deployments 1 $(date +%s)" | nc -w 1 localhost 2003 || true'
                 }
             }
         }
-        stage('Notify Monitoring') {
-		    steps {
-		        script {
-		            sh '''
-		                echo "todoapp.deployments 1 $(date +%s)" | nc localhost 2003 || true
-		            '''
-		        }
-		     }
-		 }
     }
 }
