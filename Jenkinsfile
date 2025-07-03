@@ -1,18 +1,17 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'maven3'
+        jdk 'jdk17'
+    }
+
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Jenkins credential ID
         IMAGE_NAME = 'kixan123/todo-java-app'
     }
 
-	tools {
-	    maven 'maven3'     // ✅ matches Jenkins config
-	    jdk 'jdk17'        // ✅ matches Jenkins config
-	}
-
     stages {
-        stage('Clone Code') {
+        stage('Checkout Code') {
             steps {
                 git 'https://github.com/Kx-Bytes/todo-java-app.git'
             }
@@ -24,7 +23,7 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Run JUnit Tests') {
             steps {
                 sh 'mvn test'
             }
@@ -38,8 +37,11 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                withDockerRegistry([ credentialsId: "$DOCKERHUB_CREDENTIALS", url: "" ]) {
-                    sh 'docker push $IMAGE_NAME'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push $IMAGE_NAME
+                    '''
                 }
             }
         }
