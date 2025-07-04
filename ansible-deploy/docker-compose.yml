@@ -5,6 +5,8 @@ services:
     container_name: todo-app
     ports:
       - "9001:9001"
+	environment:
+	  - GRAPHITE_HOST=graphite
     restart: always
 
   graphite:

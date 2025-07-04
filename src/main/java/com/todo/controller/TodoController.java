@@ -17,9 +17,11 @@ public class TodoController {
     @Autowired
     private TodoRepository todoRepository;
 
-    // ✅ Method to send metric to Graphite
+    // ✅ Method to send metric to Graphite (Now configurable)
     private void sendMetric(String metricName) {
-        try (Socket socket = new Socket("localhost", 2003);
+        // Fetch GRAPHITE_HOST from environment; fallback to localhost
+        String graphiteHost = System.getenv().getOrDefault("GRAPHITE_HOST", "localhost");
+        try (Socket socket = new Socket(graphiteHost, 2003);
              OutputStream out = socket.getOutputStream()) {
             String data = metricName + " 1 " + (System.currentTimeMillis() / 1000) + "\n";
             out.write(data.getBytes());
