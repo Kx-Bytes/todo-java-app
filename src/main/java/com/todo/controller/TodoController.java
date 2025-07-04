@@ -19,7 +19,7 @@ public class TodoController {
 
     // ✅ Method to send metric to Graphite
     private void sendMetric(String metricName) {
-        try (Socket socket = new Socket("graphite", 2003);
+        try (Socket socket = new Socket("localhost", 2003);
              OutputStream out = socket.getOutputStream()) {
             String data = metricName + " 1 " + (System.currentTimeMillis() / 1000) + "\n";
             out.write(data.getBytes());
