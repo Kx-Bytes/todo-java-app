@@ -1,0 +1,27 @@
+version: "3"
+services:
+  todo-java-app:
+    image: kixan123/todo-java-app
+    container_name: todo-java-app
+    ports:
+      - "9001:9001"
+    environment:
+      - GRAPHITE_HOST=graphite
+    restart: always
+
+  graphite:
+    image: graphiteapp/graphite-statsd
+    container_name: graphite
+    ports:
+      - "8081:80"
+      - "2003:2003"
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - graphite
+    restart: always
