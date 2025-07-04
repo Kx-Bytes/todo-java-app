@@ -1,18 +1,18 @@
 version: "3"
 services:
-  todo-app:
+  todo-java-app:
     image: kixan123/todo-java-app
-    container_name: todo-app
+    container_name: todo-java-app  # ✅ Matches your container name
     ports:
       - "9001:9001"
     environment:
-      - GRAPHITE_HOST=graphite
+      - GRAPHITE_HOST=graphite   # ✅ Pass GRAPHITE_HOST to container
     restart: always
 
   graphite:
     image: graphiteapp/graphite-statsd
     container_name: graphite
     ports:
-      - "80:80"       # Web UI (Graphite dashboard)
-      - "2003:2003"   # Carbon plaintext receiver (for metrics)
+      - "8081:80"     # Graphite UI
+      - "2003:2003"   # Metrics port
     restart: always
