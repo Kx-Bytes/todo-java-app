@@ -5,14 +5,14 @@ services:
     container_name: todo-app
     ports:
       - "9001:9001"
-	environment:
-	  - GRAPHITE_HOST=graphite
+    environment:
+      - GRAPHITE_HOST=graphite
     restart: always
 
   graphite:
     image: graphiteapp/graphite-statsd
     container_name: graphite
     ports:
-      - "80:80"       # Web UI
-      - "2003:2003"   # Plaintext protocol (for metrics, required!)
+      - "80:80"       # Web UI (Graphite dashboard)
+      - "2003:2003"   # Carbon plaintext receiver (for metrics)
     restart: always
