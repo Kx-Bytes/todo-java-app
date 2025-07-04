@@ -1,19 +1,27 @@
 version: "3"
-
 services:
+  todo-java-app:
+    image: kixan123/todo-java-app
+    container_name: todo-java-app
+    ports:
+      - "9001:9001"
+    environment:
+      - GRAPHITE_HOST=graphite
+    restart: always
+
   graphite:
     image: graphiteapp/graphite-statsd
     container_name: graphite
-    restart: always
     ports:
-      - "8081:80"      # Graphite Web UI (Accessible at http://localhost:8081)
-      - "2003:2003"    # Carbon TCP for receiving metrics from host (now exposed!)
+      - "8081:80"
+      - "2003:2003"
+    restart: always
 
   grafana:
     image: grafana/grafana
     container_name: grafana
-    restart: always
     ports:
-      - "3000:3000"    # Grafana Web UI (Accessible at http://localhost:3000)
+      - "3000:3000"
     depends_on:
       - graphite
+    restart: always
